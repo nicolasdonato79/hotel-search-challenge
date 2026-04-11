@@ -13,15 +13,11 @@ public class CreateSearchService implements CreateSearchUseCase {
 
     private final SearchEventPublisher searchEventPublisher;
     private final SearchIdGenerator searchIdGenerator;
-    //a remover
-    private final SearchCommandRepository searchCommandRepository;
 
     public CreateSearchService(SearchEventPublisher searchEventPublisher,
-                               SearchIdGenerator searchIdGenerator, SearchCommandRepository searchCommandRepository) {
+                               SearchIdGenerator searchIdGenerator) {
         this.searchEventPublisher = searchEventPublisher;
         this.searchIdGenerator = searchIdGenerator;
-        //A remover
-        this.searchCommandRepository = searchCommandRepository;
     }
 
     @Override
@@ -35,11 +31,7 @@ public class CreateSearchService implements CreateSearchUseCase {
                 search.checkOut(),
                 search.ages()
         );
-        //A descomentar
-        //searchEventPublisher.publish(searchWithId);
-
-        // TEMPORAL para testear DB
-        searchCommandRepository.save(searchWithId);
+        searchEventPublisher.publish(searchWithId);
 
         return searchWithId.searchId();
     }
