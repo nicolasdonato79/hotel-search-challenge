@@ -1,4 +1,4 @@
-/*** package com.challenge.infrastructure.config;
+package com.challenge.infrastructure.config;
 
 import com.challenge.domain.exception.InvalidSearchException;
 import jakarta.validation.ConstraintViolationException;
@@ -34,4 +34,4 @@ public class GlobalExceptionHandler {
         problemDetail.setDetail(ex.getMessage());
         return problemDetail;
     }
-}***/
+}

@@ -3,6 +3,7 @@ package com.challenge.application.service;
 import com.challenge.domain.exception.InvalidSearchException;
 import com.challenge.domain.model.Search;
 import com.challenge.domain.port.in.CreateSearchUseCase;
+import com.challenge.domain.port.out.SearchCommandRepository;
 import com.challenge.domain.port.out.SearchEventPublisher;
 import com.challenge.infrastructure.util.SearchIdGenerator;
 import org.springframework.stereotype.Service;
@@ -12,11 +13,15 @@ public class CreateSearchService implements CreateSearchUseCase {
 
     private final SearchEventPublisher searchEventPublisher;
     private final SearchIdGenerator searchIdGenerator;
+    //a remover
+    private final SearchCommandRepository searchCommandRepository;
 
     public CreateSearchService(SearchEventPublisher searchEventPublisher,
-                               SearchIdGenerator searchIdGenerator) {
+                               SearchIdGenerator searchIdGenerator, SearchCommandRepository searchCommandRepository) {
         this.searchEventPublisher = searchEventPublisher;
         this.searchIdGenerator = searchIdGenerator;
+        //A remover
+        this.searchCommandRepository = searchCommandRepository;
     }
 
     @Override
@@ -30,8 +35,11 @@ public class CreateSearchService implements CreateSearchUseCase {
                 search.checkOut(),
                 search.ages()
         );
+        //A descomentar
+        //searchEventPublisher.publish(searchWithId);
 
-        searchEventPublisher.publish(searchWithId);
+        // TEMPORAL para testear DB
+        searchCommandRepository.save(searchWithId);
 
         return searchWithId.searchId();
     }

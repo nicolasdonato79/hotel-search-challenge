@@ -16,4 +16,14 @@ public class SearchEventMapper {
                 search.ages()
         );
     }
+
+    public Search toDomain(SearchCreatedEvent event) {
+        return new Search(
+                event.searchId(),
+                event.hotelId(),
+                event.checkIn(),
+                event.checkOut(),
+                event.ages()
+        );
+    }
 }
