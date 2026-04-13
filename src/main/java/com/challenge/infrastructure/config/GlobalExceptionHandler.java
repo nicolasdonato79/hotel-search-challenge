@@ -1,6 +1,7 @@
 package com.challenge.infrastructure.config;
 
 import com.challenge.domain.exception.InvalidSearchException;
+import com.challenge.domain.exception.SearchNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -15,6 +16,14 @@ public class GlobalExceptionHandler {
     public ProblemDetail handleInvalidSearch(InvalidSearchException ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
         problemDetail.setTitle("Invalid search");
+        problemDetail.setDetail(ex.getMessage());
+        return problemDetail;
+    }
+
+    @ExceptionHandler(SearchNotFoundException.class)
+    public ProblemDetail handleSearchNotFound(SearchNotFoundException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
+        problemDetail.setTitle("Search not found");
         problemDetail.setDetail(ex.getMessage());
         return problemDetail;
     }

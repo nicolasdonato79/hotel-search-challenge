@@ -3,20 +3,21 @@ spring:
     name: hotel-search-challenge
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/hotel_search
-    username: postgres
-    password: postgres
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/hotel_search}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
       ddl-auto: update
+    open-in-view: false
     properties:
       hibernate:
         format_sql: true
-    open-in-view: false
 
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
 
     consumer:
       group-id: hotel-search-group
@@ -33,9 +34,9 @@ spring:
       properties:
         spring.json.add.type.headers: false
 
+server:
+  port: 8080
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
-
-server:
-  port: 8080
