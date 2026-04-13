@@ -17,14 +17,25 @@ spring:
 
   kafka:
     bootstrap-servers: localhost:9092
+
     consumer:
       group-id: hotel-search-group
       auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
-        spring.json.trusted.packages: "*"
+        spring.json.value.default.type: com.challenge.infrastructure.adapter.out.kafka.dto.SearchCreatedEvent
+        spring.json.trusted.packages: com.challenge
+
     producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
         spring.json.add.type.headers: false
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
 
 server:
   port: 8080
