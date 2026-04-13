@@ -1,0 +1,63 @@
+{
+  "info": {
+    "_postman_id": "00a75e68-934c-4fdd-b867-fe66a4afe8a1",
+    "name": "hotel-challenge",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "1198577",
+    "_collection_link": "https://go.postman.co/collection/1198577-00a75e68-934c-4fdd-b867-fe66a4afe8a1?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "search",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"hotelId\": \"1234aBc\",\r\n  \"checkIn\": \"29/12/2023\",\r\n  \"checkOut\": \"31/12/2023\",\r\n  \"ages\": [30, 29, 1, 3]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/search",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "search"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "count",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/count?searchId=234567890",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "count"
+          ],
+          "query": [
+            {
+              "key": "searchId",
+              "value": "234567890",
+              "type": "text"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
