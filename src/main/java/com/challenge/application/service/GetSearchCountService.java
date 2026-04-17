@@ -7,7 +7,6 @@ import com.challenge.domain.port.in.GetSearchCountUseCase;
 import com.challenge.domain.port.out.SearchQueryRepository;
 import org.springframework.stereotype.Service;
 
-@Service
 public class GetSearchCountService implements GetSearchCountUseCase {
 
     private final SearchQueryRepository searchQueryRepository;

@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -30,6 +31,35 @@ class SearchKafkaProducerTest {
     @InjectMocks
     private SearchKafkaProducer searchKafkaProducer;
 
+    @Test
+    void shouldPublishEventToKafka() {
+        Search search = new Search(
+                "uuid-123",
+                "1234aBc",
+                LocalDate.of(2023, 12, 29),
+                LocalDate.of(2023, 12, 31),
+                List.of(30, 29, 1, 3)
+        );
+
+        SearchCreatedEvent event = new SearchCreatedEvent(
+                "uuid-123",
+                "1234aBc",
+                LocalDate.of(2023, 12, 29),
+                LocalDate.of(2023, 12, 31),
+                List.of(30, 29, 1, 3)
+        );
+
+        when(searchEventMapper.toEvent(search)).thenReturn(event);
+        when(kafkaTemplate.send("hotel_availability_searches", "uuid-123", event))
+                .thenReturn(CompletableFuture.completedFuture(null));
+
+        searchKafkaProducer.publish(search);
+
+        assertAll(
+                () -> verify(searchEventMapper).toEvent(search),
+                () -> verify(kafkaTemplate).send("hotel_availability_searches", "uuid-123", event)
+        );
+    }
 
     @Test
     void shouldHandleErrorWhenPublishingEventToKafka() {
@@ -59,36 +89,9 @@ class SearchKafkaProducerTest {
 
         searchKafkaProducer.publish(search);
 
-        verify(searchEventMapper).toEvent(search);
-        verify(kafkaTemplate).send("hotel_availability_searches", "uuid-123", event);
-    }
-
-
-    @Test
-    void shouldPublishEventToKafka() {
-        Search search = new Search(
-                "uuid-123",
-                "1234aBc",
-                LocalDate.of(2023, 12, 29),
-                LocalDate.of(2023, 12, 31),
-                List.of(30, 29, 1, 3)
+        assertAll(
+                () -> verify(searchEventMapper).toEvent(search),
+                () -> verify(kafkaTemplate).send("hotel_availability_searches", "uuid-123", event)
         );
-
-        SearchCreatedEvent event = new SearchCreatedEvent(
-                "uuid-123",
-                "1234aBc",
-                LocalDate.of(2023, 12, 29),
-                LocalDate.of(2023, 12, 31),
-                List.of(30, 29, 1, 3)
-        );
-
-        when(searchEventMapper.toEvent(search)).thenReturn(event);
-        when(kafkaTemplate.send("hotel_availability_searches", "uuid-123", event))
-                .thenReturn(CompletableFuture.completedFuture(null));
-
-        searchKafkaProducer.publish(search);
-
-        verify(searchEventMapper).toEvent(search);
-        verify(kafkaTemplate).send("hotel_availability_searches", "uuid-123", event);
     }
 }

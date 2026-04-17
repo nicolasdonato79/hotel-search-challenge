@@ -3,7 +3,7 @@ package com.challenge.application.service;
 import com.challenge.domain.exception.InvalidSearchException;
 import com.challenge.domain.model.Search;
 import com.challenge.domain.port.out.SearchEventPublisher;
-import com.challenge.infrastructure.util.SearchIdGenerator;
+import com.challenge.domain.port.out.SearchIdGenerator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -49,11 +49,14 @@ class CreateSearchServiceTest {
         verify(searchEventPublisher).publish(captor.capture());
 
         Search published = captor.getValue();
-        assertEquals("uuid-123", published.searchId());
-        assertEquals("1234aBc", published.hotelId());
-        assertEquals(LocalDate.of(2023, 12, 29), published.checkIn());
-        assertEquals(LocalDate.of(2023, 12, 31), published.checkOut());
-        assertEquals(List.of(30, 29, 1, 3), published.ages());
+        assertAll(
+                () -> assertEquals("uuid-123", result),
+                () -> assertEquals("uuid-123", published.searchId()),
+                () -> assertEquals("1234aBc", published.hotelId()),
+                () -> assertEquals(LocalDate.of(2023, 12, 29), published.checkIn()),
+                () -> assertEquals(LocalDate.of(2023, 12, 31), published.checkOut()),
+                () -> assertEquals(List.of(30, 29, 1, 3), published.ages())
+        );
     }
 
     @Test
@@ -71,9 +74,11 @@ class CreateSearchServiceTest {
                 () -> createSearchService.create(search)
         );
 
-        assertEquals("checkIn must be before checkOut", ex.getMessage());
-        verifyNoInteractions(searchIdGenerator);
-        verifyNoInteractions(searchEventPublisher);
+        assertAll(
+                () -> assertEquals("checkIn must be before checkOut", ex.getMessage()),
+                () -> verifyNoInteractions(searchIdGenerator),
+                () -> verifyNoInteractions(searchEventPublisher)
+        );
     }
 
     @Test
@@ -87,8 +92,9 @@ class CreateSearchServiceTest {
         );
 
         assertThrows(InvalidSearchException.class, () -> createSearchService.create(search));
-
-        verifyNoInteractions(searchIdGenerator);
-        verifyNoInteractions(searchEventPublisher);
+        assertAll(
+                () -> verifyNoInteractions(searchIdGenerator),
+                () -> verifyNoInteractions(searchEventPublisher)
+        );
     }
 }

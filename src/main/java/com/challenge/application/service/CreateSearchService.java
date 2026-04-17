@@ -5,10 +5,9 @@ import com.challenge.domain.model.Search;
 import com.challenge.domain.port.in.CreateSearchUseCase;
 import com.challenge.domain.port.out.SearchCommandRepository;
 import com.challenge.domain.port.out.SearchEventPublisher;
-import com.challenge.infrastructure.util.SearchIdGenerator;
+import com.challenge.domain.port.out.SearchIdGenerator;
 import org.springframework.stereotype.Service;
 
-@Service
 public class CreateSearchService implements CreateSearchUseCase {
 
     private final SearchEventPublisher searchEventPublisher;
