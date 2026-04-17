@@ -12,7 +12,6 @@ public record Search(
 ) {
 
     public Search {
-        // Refuerza inmutabilidad (evita listas mutables externas)
         ages = List.copyOf(ages);
     }
 
