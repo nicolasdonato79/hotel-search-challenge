@@ -1,19 +1,21 @@
-package com.challenge.infrastructure.util;
+package com.challenge.infrastructure.adapter.out.generator;
 
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SearchIdGeneratorTest {
+class UuidSearchIdGeneratorTest {
 
-    private final SearchIdGenerator generator = new SearchIdGenerator();
+    private final UuidSearchIdGenerator generator = new UuidSearchIdGenerator();
 
     @Test
     void shouldGenerateNonNullUuid() {
         String id = generator.generate();
 
-        assertNotNull(id);
-        assertFalse(id.isBlank());
+        assertAll(
+                () -> assertNotNull(id),
+                () -> assertFalse(id.isBlank())
+        );
     }
 
     @Test

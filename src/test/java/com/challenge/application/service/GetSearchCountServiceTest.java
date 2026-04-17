@@ -43,12 +43,13 @@ class GetSearchCountServiceTest {
 
         SearchCountResult result = getSearchCountService.getBySearchId("uuid-123");
 
-        assertEquals("uuid-123", result.searchId());
-        assertEquals(search, result.search());
-        assertEquals(2L, result.count());
-
-        verify(searchQueryRepository).findBySearchId("uuid-123");
-        verify(searchQueryRepository).countByCriteria(search.toCriteria());
+        assertAll(
+                () -> assertEquals("uuid-123", result.searchId()),
+                () -> assertEquals(search, result.search()),
+                () -> assertEquals(2L, result.count()),
+                () -> verify(searchQueryRepository).findBySearchId("uuid-123"),
+                () -> verify(searchQueryRepository).countByCriteria(search.toCriteria())
+        );
     }
 
     @Test
@@ -60,9 +61,10 @@ class GetSearchCountServiceTest {
                 SearchNotFoundException.class,
                 () -> getSearchCountService.getBySearchId("missing-uuid")
         );
-
-        assertEquals("Search not found for searchId: missing-uuid", ex.getMessage());
-        verify(searchQueryRepository).findBySearchId("missing-uuid");
-        verify(searchQueryRepository, never()).countByCriteria(any());
+        assertAll(
+                () -> assertEquals("Search not found for searchId: missing-uuid", ex.getMessage()),
+                () -> verify(searchQueryRepository).findBySearchId("missing-uuid"),
+                () -> verify(searchQueryRepository, never()).countByCriteria(any())
+        );
     }
 }

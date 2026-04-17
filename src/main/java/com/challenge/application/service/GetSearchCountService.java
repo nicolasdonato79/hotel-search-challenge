@@ -3,11 +3,9 @@ package com.challenge.application.service;
 import com.challenge.domain.exception.SearchNotFoundException;
 import com.challenge.domain.model.Search;
 import com.challenge.domain.model.SearchCountResult;
-import com.challenge.domain.port.in.GetSearchCountUseCase;
+import com.challenge.application.port.in.GetSearchCountUseCase;
 import com.challenge.domain.port.out.SearchQueryRepository;
-import org.springframework.stereotype.Service;
 
-@Service
 public class GetSearchCountService implements GetSearchCountUseCase {
 
     private final SearchQueryRepository searchQueryRepository;

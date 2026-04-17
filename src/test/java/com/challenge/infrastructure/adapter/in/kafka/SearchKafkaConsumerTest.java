@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -59,9 +61,14 @@ class SearchKafkaConsumerTest {
         searchKafkaConsumer.consume(event);
 
         Runnable runnable = runnableCaptor.getValue();
+        assertNotNull(runnable);
+
         runnable.run();
 
-        verify(searchEventMapper).toDomain(event);
-        verify(searchCommandRepository).save(search);
+        assertAll(
+                () -> verify(virtualThreadExecutor).submit(any(Runnable.class)),
+                () -> verify(searchEventMapper).toDomain(event),
+                () -> verify(searchCommandRepository).save(search)
+        );
     }
 }

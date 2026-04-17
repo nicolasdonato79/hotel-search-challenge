@@ -2,13 +2,10 @@ package com.challenge.application.service;
 
 import com.challenge.domain.exception.InvalidSearchException;
 import com.challenge.domain.model.Search;
-import com.challenge.domain.port.in.CreateSearchUseCase;
-import com.challenge.domain.port.out.SearchCommandRepository;
+import com.challenge.application.port.in.CreateSearchUseCase;
 import com.challenge.domain.port.out.SearchEventPublisher;
-import com.challenge.infrastructure.util.SearchIdGenerator;
-import org.springframework.stereotype.Service;
+import com.challenge.domain.port.out.SearchIdGenerator;
 
-@Service
 public class CreateSearchService implements CreateSearchUseCase {
 
     private final SearchEventPublisher searchEventPublisher;
