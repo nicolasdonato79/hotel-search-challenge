@@ -1,19 +1,17 @@
 services:
-  postgres:
-    image: postgres:16
-    container_name: hotel-search-postgres
+  oracle:
+    image: gvenzl/oracle-xe:21-slim
+    container_name: hotel-search-oracle
     environment:
-      POSTGRES_DB: hotel_search
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      ORACLE_PASSWORD: oracle
+      APP_USER: hotel_user
+      APP_USER_PASSWORD: hotel_pass
     ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - "1521:1521"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d hotel_search"]
-      interval: 10s
-      timeout: 5s
+      test: ["CMD-SHELL", "echo 'SELECT 1 FROM dual;' | sqlplus -s hotel_user/hotel_pass@localhost:1521/XEPDB1"]
+      interval: 20s
+      timeout: 10s
       retries: 10
 
   kafka:
@@ -31,9 +29,6 @@ services:
       KAFKA_NODE_ID: 1
       KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
     healthcheck:
       test: ["CMD-SHELL", "/opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --list > /dev/null 2>&1"]
       interval: 15s
@@ -46,17 +41,14 @@ services:
       dockerfile: Dockerfile
     container_name: hotel-search-app
     depends_on:
-      postgres:
+      oracle:
         condition: service_healthy
       kafka:
         condition: service_healthy
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/hotel_search
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_DATASOURCE_URL: jdbc:oracle:thin:@oracle:1521/XEPDB1
+      SPRING_DATASOURCE_USERNAME: hotel_user
+      SPRING_DATASOURCE_PASSWORD: hotel_pass
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
     ports:
       - "8080:8080"
-
-volumes:
-  postgres_data:

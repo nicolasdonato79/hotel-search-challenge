@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class SearchEventMapperTest {
@@ -25,11 +26,13 @@ class SearchEventMapperTest {
 
         SearchCreatedEvent event = mapper.toEvent(search);
 
-        assertEquals("uuid-123", event.searchId());
-        assertEquals("1234aBc", event.hotelId());
-        assertEquals(LocalDate.of(2023, 12, 29), event.checkIn());
-        assertEquals(LocalDate.of(2023, 12, 31), event.checkOut());
-        assertEquals(List.of(30, 29, 1, 3), event.ages());
+        assertAll(
+                () -> assertEquals("uuid-123", event.searchId()),
+                () -> assertEquals("1234aBc", event.hotelId()),
+                () -> assertEquals(LocalDate.of(2023, 12, 29), event.checkIn()),
+                () -> assertEquals(LocalDate.of(2023, 12, 31), event.checkOut()),
+                () -> assertEquals(List.of(30, 29, 1, 3), event.ages())
+        );
     }
 
     @Test
@@ -44,10 +47,12 @@ class SearchEventMapperTest {
 
         Search search = mapper.toDomain(event);
 
-        assertEquals("uuid-123", search.searchId());
-        assertEquals("1234aBc", search.hotelId());
-        assertEquals(LocalDate.of(2023, 12, 29), search.checkIn());
-        assertEquals(LocalDate.of(2023, 12, 31), search.checkOut());
-        assertEquals(List.of(30, 29, 1, 3), search.ages());
+        assertAll(
+                () -> assertEquals("uuid-123", search.searchId()),
+                () -> assertEquals("1234aBc", search.hotelId()),
+                () -> assertEquals(LocalDate.of(2023, 12, 29), search.checkIn()),
+                () -> assertEquals(LocalDate.of(2023, 12, 31), search.checkOut()),
+                () -> assertEquals(List.of(30, 29, 1, 3), search.ages())
+        );
     }
 }

@@ -1,7 +1,7 @@
 package com.challenge.infrastructure.adapter.in.rest;
 
-import com.challenge.domain.port.in.CreateSearchUseCase;
-import com.challenge.domain.port.in.GetSearchCountUseCase;
+import com.challenge.application.port.in.CreateSearchUseCase;
+import com.challenge.application.port.in.GetSearchCountUseCase;
 import com.challenge.infrastructure.adapter.in.rest.dto.CountResponseDto;
 import com.challenge.infrastructure.adapter.in.rest.dto.SearchRequestDto;
 import com.challenge.infrastructure.adapter.in.rest.dto.SearchResponseDto;

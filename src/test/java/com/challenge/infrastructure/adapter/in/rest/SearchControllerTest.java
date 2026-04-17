@@ -4,8 +4,8 @@ import com.challenge.domain.exception.InvalidSearchException;
 import com.challenge.domain.exception.SearchNotFoundException;
 import com.challenge.domain.model.Search;
 import com.challenge.domain.model.SearchCountResult;
-import com.challenge.domain.port.in.CreateSearchUseCase;
-import com.challenge.domain.port.in.GetSearchCountUseCase;
+import com.challenge.application.port.in.CreateSearchUseCase;
+import com.challenge.application.port.in.GetSearchCountUseCase;
 import com.challenge.infrastructure.adapter.in.rest.mapper.SearchCountRestMapper;
 import com.challenge.infrastructure.adapter.in.rest.mapper.SearchRestMapper;
 import com.challenge.infrastructure.config.GlobalExceptionHandler;
@@ -25,6 +25,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 
 @WebMvcTest(SearchController.class)
 @Import({SearchRestMapper.class, SearchCountRestMapper.class, GlobalExceptionHandler.class})
