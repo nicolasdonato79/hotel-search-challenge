@@ -1,4 +1,4 @@
-package com.challenge.domain.port.in;
+package com.challenge.application.port.in;
 
 import com.challenge.domain.model.SearchCountResult;
 
